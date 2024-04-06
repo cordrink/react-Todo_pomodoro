@@ -4,7 +4,7 @@ import TextareaField from "../UI/Forms/TextareaField";
 import Button from "../UI/Button/Button";
 import {TasksContexts} from "../../Contexts/TasksContexts";
 
-const TaskForm = () => {
+const TaskForm = ({closeModal}) => {
 
     const [formValue, setFormValue] = useState({
         title: '',
@@ -21,6 +21,7 @@ const TaskForm = () => {
             createdAt: new Date(),
         })
         // Fermer la modal
+        closeModal();
     }
 
     return(
