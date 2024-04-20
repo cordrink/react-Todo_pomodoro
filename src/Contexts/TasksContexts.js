@@ -26,6 +26,38 @@ const tasksReducer = (state, action) => {
             count: tasks.length
         }
     }
+
+    if (action.type === 'REMOVE_TASK' && !isNaN(+action.value)) {
+        const tasks = [...state.tasks];
+        tasks.splice(+action.value, 1);
+        return {
+            tasks,
+            count: tasks.length
+        }
+    }
+
+    if (action.type === 'EDIT_TASK' && action.value && !isNaN(+action.value.taskIndex)) {
+        const tasks = [...state.tasks];
+        tasks[+action.value.taskIndex] = {
+            ...tasks[+action.value.taskIndex],
+            ...action.value.task
+        }
+        return {
+            tasks,
+            count: tasks.length,
+        }
+    }
+
+    if (action.type === 'TOGGLE_STATUS' && action.value && !isNaN(+action.value.taskIndex)) {
+        const tasks = [...state.tasks];
+        tasks[+action.value.taskIndex] = {
+            ...tasks[+action.value.taskIndex],
+            isDone: action.value.isDone,
+        }
+        return {
+            tasks
+        }
+    }
     return state ? state : INITIAL_TASKS;
 }
 
@@ -37,12 +69,27 @@ const TasksContextProvider = ({children}) => {
 
     const addTask = (task) => {
         dispatchTasks({ type:'ADD_TASK', value: task });
+    };
+
+    const removeTask = (taskIndex) => {
+        dispatchTasks({type: 'REMOVE_TASK', value: taskIndex})
+    };
+
+    const editTask = ({taskIndex, task}) => {
+        dispatchTasks({type: 'EDIT_TASK', value: {taskIndex, task}});
+    };
+    const toggleTaskIsDone = ({taskIndex, isDone}) => {
+        dispatchTasks({type: 'TOGGLE_STATUS', value: {taskIndex, isDone}})
     }
 
     const value = {
         taskData,
-        addTask
+        addTask,
+        removeTask,
+        editTask,
+        toggleTaskIsDone
     };
+
 
     return (
       <TasksContexts.Provider value={ value }>
