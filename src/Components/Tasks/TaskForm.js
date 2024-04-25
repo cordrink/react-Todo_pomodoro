@@ -3,8 +3,9 @@ import TextField from "../UI/Forms/TextField";
 import TextareaField from "../UI/Forms/TextareaField";
 import Button from "../UI/Button/Button";
 import {TasksContexts} from "../../Contexts/TasksContexts";
+import useTimeParser from "../../Hooks/useTimeParser";
 
-const TaskForm = ({closeModal, value, index}) => {
+const TaskForm = ({closeModal, value, index, time}) => {
 
     const [formValue, setFormValue] = useState(value ? value :  {
         title: '',
@@ -13,7 +14,8 @@ const TaskForm = ({closeModal, value, index}) => {
 
     // const [invalidFields, setInvalidFields] = useState([]);
 
-    const {addTask, editTask} = useContext(TasksContexts);
+    const {addTask, editTask, launchTimer} = useContext(TasksContexts);
+    let {parseSecondsToHms} = useTimeParser();
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -23,6 +25,8 @@ const TaskForm = ({closeModal, value, index}) => {
         }*/
         if (value && !isNaN(+index)){ // S'il y a une value en props => modification
             editTask({task: formValue, taskIndex: index});
+        } else if (!isNaN(time) && !isNaN(+index)) {
+            launchTimer();
         } else {
             addTask({ // Sinon => Creation
                 ...formValue,
@@ -33,6 +37,36 @@ const TaskForm = ({closeModal, value, index}) => {
         // Fermer la modal
         closeModal();
     }
+
+    /*const handleStartTimer = ({title, description}) => {
+
+        if (isTimerStarted) {
+
+            clearInterval(timerId);
+
+            // props.saveTime(time, title, description);
+
+            addTask({
+                time,
+                date: new Date(),
+                title,
+                description
+            })
+
+            setIsTimerStarted(false);
+            setTime(0)
+
+        }else {
+
+            setIsTimerStarted(true);
+
+            timerId = setInterval(() => {
+                setTime((prevTime) => {
+                    return prevTime + 1;
+                });
+            }, 1000);
+        }
+    }*/
 
     /*const handleError = (error) => { // {name. error}
         const invalidFeildsCopy = [...invalidFields];
@@ -50,6 +84,16 @@ const TaskForm = ({closeModal, value, index}) => {
             }
         }
     }*/
+
+    const launcherContain = (
+        <>
+            <span>
+            {
+                parseSecondsToHms(time)
+            }
+        </span>
+        </>
+    )
 
     return (
         <form onSubmit={handleSubmit}>

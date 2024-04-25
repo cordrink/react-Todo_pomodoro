@@ -14,7 +14,6 @@ const TextField = ({label, name, placeholder, validation,value, onchange}) => {
     }
 
     useEffect(() => {
-        console.log('VALIDATE', value);
         validateField(value, validation);
     }, [value]);
 

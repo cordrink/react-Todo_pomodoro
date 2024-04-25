@@ -8,7 +8,8 @@ const TasksContexts = createContext({
     addTask: (task) => {},
     removeTask: (taskIndex) => {},
     toggleTaskIsDone: ({taskIndex, isDone}) => {},
-    editTask: ({taskIndex, task}) => {}
+    editTask: ({taskIndex, task}) => {},
+    launchTimer: ({taskIndex}) => {}
 });
 
 export {TasksContexts};

@@ -15,6 +15,7 @@ const TasksTable = () => {
                         <th>Status</th>
                         <th>Title</th>
                         <th>Description</th>
+                        <th>created at</th>
                         <th>Time</th>
                         <th>Actions</th>
                     </tr>
